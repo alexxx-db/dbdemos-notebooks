@@ -37,7 +37,7 @@ USE SCHEMA dbdemos_ai_query;
 -- MAGIC SELECT ai_query(<Endpoint Name>, <prompt>)
 -- MAGIC ```
 -- MAGIC
--- MAGIC In the [previous notebook]($./02-Generate-fake-data-with-AI-functions-Foundation-Model), we created a wrapper `ASK_LLM_MODEL` function to simplify our SQL operation and hide the configuration details to end-users. We will re-use this function for this pipeline.
+-- MAGIC In the [previous notebook]($./02-Generate-fake-data-with-AI-functions), we created a wrapper `ASK_LLM_MODEL` function to simplify our SQL operation and hide the configuration details to end-users. We will re-use this function for this pipeline.
 -- MAGIC
 -- MAGIC In order to simplify the user-experience for our analysts, we will build prescriptive SQL functions that ask natural language questions of our data and return the responses as structured data.
 
@@ -99,7 +99,7 @@ CREATE OR REPLACE FUNCTION ANNOTATE_REVIEW(review STRING)
             "followup_reason": <reason for followup>
         }
         
-        Review:', review), "{'type': 'json_object'}"),
+        Review:', review)),
       "STRUCT<product_name: STRING, entity_sentiment: STRING, followup: STRING, followup_reason: STRING>")
 
 -- ALTER FUNCTION ANNOTATE_REVIEW OWNER TO `your_principal`; -- for the demo only, make sure other users can access your function
@@ -124,8 +124,7 @@ CREATE OR REPLACE FUNCTION GENERATE_RESPONSE(firstname STRING, lastname STRING, 
   RETURN ASK_LLM_MODEL(
     CONCAT("Our customer named ", firstname, " ", lastname, " who ordered ", order_count, " ", product_name, " was unhappy about ", product_name, "specifically due to ", reason, ". Provide an empathetic message I can send to my customer 
     including the offer to have a call with the relevant product manager to leave feedback. I want to win back their 
-    favour and I do not want the customer to churn"), 
-    "{'type': 'text'}"
+    favour and I do not want the customer to churn")
   );
 -- ALTER FUNCTION GENERATE_RESPONSE OWNER TO `account users`; -- for the demo only, make sure other users can access your function
 
@@ -190,7 +189,7 @@ SELECT review_id,
 -- MAGIC
 -- MAGIC We can turn the steps in this notebook into a production ready Lakeflow Pipelines with AI SQL Functions
 -- MAGIC
--- MAGIC Open [04-create-end-to-end-DLT-workflow]($./04-create-end-to-end-DLT-workflow) for more details.
+-- MAGIC Open [04-create-end-to-end-DLT-workflow]($./04-create-end-to-end-SDP-workflow) for more details.
 
 -- COMMAND ----------
 
@@ -200,7 +199,7 @@ SELECT review_id,
 -- MAGIC We've seen that the lakehouse provide advanced AI capabilities, not only you can leverage external LLM APIs, but you can also build your own LLM with Databricks GenAI applications!
 -- MAGIC For more details on creating your chatbot with the Lakehouse, run: `dbdemos.install('llm-rag-chatbot')`
 -- MAGIC
--- MAGIC Go back to [the introduction]($./01-SQL-AI-Functions-Introduction)
+-- MAGIC Go back to [the introduction]($./00-SQL-AI-Functions-Introduction)
 
 -- COMMAND ----------
 
